@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 
-const app = express(); // ✅ Define app here!
+const app = express(); // ✅ define `app` BEFORE using it
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-const PARTNER_DATA = {}; // In-memory database
+const PARTNER_DATA = {}; // simple in-memory storage
 
 // Health check
 app.get("/", (req, res) => {

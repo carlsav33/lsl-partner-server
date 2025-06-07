@@ -3,15 +3,14 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-const PARTNER_DATA = {}; // In-memory storage
+const PARTNER_DATA = {}; // simple in-memory store
 
-// Root test route
+// Test route
 app.get("/", (req, res) => {
-  res.send("LSL Partnership Server is running.");
+  res.send("LSL Partnership Server is running!");
 });
 
 // Set a partner
@@ -36,5 +35,5 @@ app.get("/get_partner", (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

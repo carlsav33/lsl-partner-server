@@ -1,4 +1,6 @@
+console.log("server.js loaded");
 const express = require("express");
+...const express = require("express");
 const cors = require("cors");
 
 const app = express(); // ✅ define `app` BEFORE using it

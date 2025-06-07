@@ -6,14 +6,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-const PARTNER_DATA = {}; // simple in-memory store
+const PARTNER_DATA = {}; // simple in-memory storage
 
-// Test route
+// Health check route
 app.get("/", (req, res) => {
-  res.send("LSL Partnership Server is running!");
+  res.send("LSL Partnership Server is alive!");
 });
 
-// Set a partner
+// Set partnership
 app.post("/set_partner", (req, res) => {
   const { User, Partner, PW } = req.body;
   if (PW !== process.env.PW) return res.status(403).send("Unauthorized");
@@ -23,7 +23,7 @@ app.post("/set_partner", (req, res) => {
   res.send({ status: "ok", Partner });
 });
 
-// Get a partner
+// Get partnership
 app.get("/get_partner", (req, res) => {
   const { User, PW } = req.query;
   if (PW !== process.env.PW) return res.status(403).send("Unauthorized");
@@ -33,7 +33,6 @@ app.get("/get_partner", (req, res) => {
   res.send({ status: "ok", Partner: partner });
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

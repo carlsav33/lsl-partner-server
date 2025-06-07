@@ -1,36 +1,40 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-const PASSWORD = "l1zz4nn34PL4Yr1d3r";
-let partnerships = {};
+const PARTNER_DATA = {}; // In-memory storage
 
-function checkPW(req, res) {
-  if (req.query.PW !== PASSWORD) {
-    res.status(401).send("Unauthorized: Invalid password");
-    return false;
-  }
-  return true;
-}
+// Root test route
+app.get("/", (req, res) => {
+  res.send("LSL Partnership Server is running.");
+});
 
+// Set a partner
+app.post("/set_partner", (req, res) => {
+  const { User, Partner, PW } = req.body;
+  if (PW !== process.env.PW) return res.status(403).send("Unauthorized");
+
+  PARTNER_DATA[User] = Partner;
+  PARTNER_DATA[Partner] = User;
+  res.send({ status: "ok", Partner });
+});
+
+// Get a partner
 app.get("/get_partner", (req, res) => {
-  if (!checkPW(req, res)) return;
-  const user = req.query.User;
-  if (!user) return res.status(400).send("Missing User parameter");
-  res.send(partnerships[user] || "");
+  const { User, PW } = req.query;
+  if (PW !== process.env.PW) return res.status(403).send("Unauthorized");
+
+  const partner = PARTNER_DATA[User];
+  if (!partner) return res.status(404).send("No partner found");
+  res.send({ status: "ok", Partner: partner });
 });
 
-app.get("/set_partner", (req, res) => {
-  if (!checkPW(req, res)) return;
-  const { User, Partner } = req.query;
-  if (!User || Partner === undefined) return res.status(400).send("Missing parameters");
-  if (Partner === "") delete partnerships[User];
-  else partnerships[User] = Partner;
-  res.send("OK");
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

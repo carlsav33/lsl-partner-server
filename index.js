@@ -1,29 +1,4 @@
-console.log("server.js loaded");
-const express = require("express");
-...const express = require("express");
-const cors = require("cors");
-
-const app = express(); // ✅ define `app` BEFORE using it
-const PORT = process.env.PORT || 3000;
-
-app.use(cors());
-app.use(express.json());
-
-const PARTNER_DATA = {}; // simple in-memory storage
-
-// Health check
-app.get("/", (req, res) => {
-  res.send("LSL Partnership Server is alive!");
-});
-
-// Set partner
-app.post("/set_partner", (req, res) => {
-  const { User, Partner, PW } = req.body;
-  if (PW !== process.env.PW) return res.status(403).send("Unauthorized");
-
-  PARTNER_DATA[User] = Partner;
-  PARTNER_DATA[Partner] = User;
-  res.send({ status: "ok", Partner });
+;
 });
 
 // Get partner
